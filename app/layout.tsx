@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import React from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+const sans = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["500", "800"] });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
+  title: "Notification",
 };
 
 export default function RootLayout({
@@ -16,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("h-screen")}>
+      <body className={cn("h-screen font-medium", sans.className)}>
         <div className="background-container min-h-screen">
           <div className="card-conainer">{children}</div>
         </div>
