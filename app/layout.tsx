@@ -18,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("h-screen font-medium", sans.className)}>
-        <div className="background-container min-h-screen">
-          <div className="card-conainer">{children}</div>
+        <div className="background-container min-h-screen bg-[#F9FAFD]">
+          <div className="card-conainer flex items-center justify-center">
+            {children}
+          </div>
         </div>
       </body>
     </html>

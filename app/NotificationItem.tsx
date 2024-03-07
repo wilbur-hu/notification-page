@@ -38,31 +38,57 @@ export default function NotificationItem(props: NotificationItemProps) {
     notification: { user },
   } = props;
 
-  const dotClass = notification.read
-    ? null
-    : "after:h-[8px] after:w-[8px] after:rounded-full after:content-['']";
+  const dotClass = {
+    "after:h-[8px] after:w-[8px] after:rounded-full after:content-[''] after:bg-red after:inline-block after:ml-[6px]":
+      !notification.read,
+  };
+
+  const bgClass = {
+    "bg-snow": !notification.read,
+  };
+
+  function shouldShowTarget(notification: Notification) {
+    return (
+      notification.target &&
+      notification.action !== Action.CommentOnPicture &&
+      notification.action !== Action.PrivateMessage
+    );
+  }
 
   return (
     <div
-      className={cn("flex", props.className)}
+      className={cn(
+        "flex rounded-[8px] px-[20px] pb-[17px] pt-[18px] text-dark-grey-blue",
+        bgClass,
+        props.className,
+      )}
       onClick={() => props.onClick?.(notification)}
     >
       <div className="shrink-0 rounded-full">
         <Image src={user.avatar} alt={user.name} width={45} height={45} />
       </div>
 
-      <div className="flex grow flex-col items-start">
-        <span className={cn(dotClass)}>
-          <span className="font-bold">{user.name}</span>
-          <span> {renderAction(notification.action)} </span>
-          {notification.target &&
-            notification.action !== Action.CommentOnPicture && (
-              <span className="font-bold">{notification.target}</span>
+      <div className="ml-[19px] flex grow flex-col items-start leading-[20px]">
+        <span className={cn("flex items-center", dotClass)}>
+          <span>
+            <span className="font-bold text-very-dark-grey-blue">
+              {user.name}{" "}
+            </span>
+            <span> {renderAction(notification.action)} </span>
+            {shouldShowTarget(notification) && (
+              <span className="font-bold  text-very-dark-grey-blue">
+                {notification.target}
+              </span>
             )}
+          </span>
         </span>
-        <span>{formatRelativeTime(notification.date, now)}</span>
+        <span className="mt-[3px]">
+          {formatRelativeTime(notification.date, now)}
+        </span>
         {notification.action === Action.PrivateMessage && (
-          <div>{notification.target}</div>
+          <p className="mt-[13px] rounded-[5px] border border-solid px-[20px] pb-[20px] pt-[17px] hover:bg-light-grey-blue">
+            {notification.target}
+          </p>
         )}
       </div>
       {notification.action === Action.CommentOnPicture && (

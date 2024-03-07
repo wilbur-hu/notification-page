@@ -13,6 +13,7 @@ import avatarAnnaKim from "@/public/images/avatar-anna-kim.webp";
 import imageChess from "@/public/images/image-chess.webp";
 import React, { useState } from "react";
 import NotificationItem from "@/app/NotificationItem";
+import moment from "moment";
 
 export type NotificationCardProps = {
   className?: string;
@@ -121,21 +122,43 @@ export default function NotificationCard(props: NotificationCardProps) {
     );
   }
 
+  moment.relativeTimeThreshold("d", 7);
+  moment.relativeTimeThreshold("w", 4);
+  console.log("locale is ", moment.locale());
+  moment.locale("en");
+  moment.updateLocale("en", {
+    relativeTime: {
+      m: "1m",
+      mm: "%dm",
+      d: "1 day",
+      w: "1 week",
+      M: "1 month",
+    },
+  });
+
   return (
-    <div className="flex h-[839px] w-[730px] flex-col items-stretch px-[30px]">
-      <h2 className="flex items-center justify-start">
-        <span>Notifications</span>
-        <span>{countUnread(notifications)}</span>
-        <button className="ml-auto" onClick={() => markAllAsRead()}>
-          Mark all as read{" "}
+    <div className="flex h-[839px] w-[730px] flex-col items-stretch rounded-[15px] bg-white px-[30px]">
+      <h2 className="mt-[33px] flex items-center justify-start">
+        <span className=" text-[24px] font-extrabold leading-[30px] text-very-dark-grey-blue">
+          Notifications
+        </span>
+        <span className="ml-[11px] h-[25px] w-[32px] rounded-[6px] bg-blue text-center font-extrabold text-white">
+          {countUnread(notifications)}
+        </span>
+        <button
+          className="ml-auto text-dark-grey-blue hover:text-blue"
+          onClick={() => markAllAsRead()}
+        >
+          Mark all as read
         </button>
       </h2>
 
-      <ul>
+      <ul className="mt-[25px]">
         {notifications.map((n, idx) => {
           return (
             <li key={n.id}>
               <NotificationItem
+                className="mt-[8px]"
                 notification={n}
                 now={now}
                 onClick={(n) => markAsRead(n)}
